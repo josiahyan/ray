@@ -10,6 +10,13 @@ COVERAGE_FILE_NAME = "ray_release.cov"
 
 @click.command()
 @click.argument("test_target", required=True, type=str)
+@click.option(
+    "--production",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help=("Production mode. Compute and persist coverage data to DB."),
+)
 def main(test_target: str) -> None:
     """
     This script collects dynamic coverage data for the test target, and upload the
