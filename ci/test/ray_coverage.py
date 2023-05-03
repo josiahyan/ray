@@ -1,4 +1,6 @@
+import boto3
 import click
+import date
 import logging
 import os
 import subprocess
@@ -11,7 +13,7 @@ COVERAGE_FILE_NAME = "ray_release.cov"
 @click.command()
 @click.argument("test_target", required=True, type=str)
 @click.option(
-    "--production",
+    "--productionize",
     is_flag=True,
     show_default=True,
     default=False,
@@ -28,7 +30,21 @@ def main(test_target: str) -> None:
     _run_test(test_target, coverage_file)
     coverage_info = _collect_coverage(coverage_file)
     logger.info(coverage_info)
+    if productionize:
+        s3_file_name = _persist_coverage_info(coverage_info)
+        logger.info(f"Successfully uploaded coverage data to s3 as {s3_file_name}")
     return 0
+
+
+def _persist_coverage_info(coverage_file: str) -> str:
+    s3_file_name = 
+        f'continuous-release/ray-release-{date.today().strftime("%Y-%m-%d")}.cov'
+    boto3.resource('s3').upload_file(
+        coverage_file, 
+        'ray-release-automation-results',
+        s3_file_name,
+    )
+    return s3_file_name
 
 
 def _run_test(test_target: str, coverage_file: str) -> None:
