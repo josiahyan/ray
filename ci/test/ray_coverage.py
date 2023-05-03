@@ -19,7 +19,7 @@ COVERAGE_FILE_NAME = "ray_release.cov"
     default=False,
     help=("Production mode. Compute and persist coverage data to DB."),
 )
-def main(test_target: str) -> None:
+def main(test_target: str, productionize: bool) -> None:
     """
     This script collects dynamic coverage data for the test target, and upload the
     results to database (S3).
@@ -31,7 +31,7 @@ def main(test_target: str) -> None:
     coverage_info = _collect_coverage(coverage_file)
     logger.info(coverage_info)
     if productionize:
-        s3_file_name = _persist_coverage_info(coverage_info)
+        s3_file_name = _persist_coverage_info(coverage_file)
         logger.info(f"Successfully uploaded coverage data to s3 as {s3_file_name}")
     return 0
 
