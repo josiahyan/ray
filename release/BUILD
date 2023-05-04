@@ -362,6 +362,16 @@ py_test(
 )
 
 py_test(
+    name = "test_anyscale_job_manager",
+    size = "small",
+    srcs = ["ray_release/tests/test_anyscale_job_manager.py"],
+    tags = [
+        "release_unit",
+        "team:ci",
+    ],
+)
+
+py_test(
     name = "test_anyscale_job_wrapper",
     size = "small",
     srcs = ["ray_release/tests/test_anyscale_job_wrapper.py"],
@@ -369,6 +379,17 @@ py_test(
         "release_unit",
         "team:ci",
     ],
+)
+
+py_test(
+    name = "test_bisect",
+    size = "small",
+    srcs = ["ray_release/tests/test_bisect.py"],
+    tags = [
+        "release_unit",
+        "team:ci",
+    ],
+    deps = ["//:ray_lib"],
 )
 
 py_test(
@@ -445,6 +466,17 @@ py_test(
 )
 
 py_test(
+    name = "test_result",
+    size = "small",
+    srcs = ["ray_release/tests/test_result.py"],
+    tags = [
+        "release_unit",
+        "team:ci",
+    ],
+    deps = ["//:ray_lib"],
+)
+
+py_test(
     name = "test_run_script",
     size = "small",
     srcs = ["ray_release/tests/test_run_script.py"],
@@ -453,6 +485,16 @@ py_test(
         "ray_release/tests/_test_run_release_test_sh.py",
         "run_release_test.sh",
     ],
+    tags = [
+        "release_unit",
+        "team:ci",
+    ],
+)
+
+py_test(
+    name = "test_template",
+    size = "small",
+    srcs = ["ray_release/tests/test_template.py"],
     tags = [
         "release_unit",
         "team:ci",
