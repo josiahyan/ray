@@ -589,6 +589,9 @@ py_test(
     name = "test_wheels",
     size = "small",
     srcs = ["ray_release/tests/test_wheels.py"],
+    data = [
+        "//:python_sources",
+    ],
     exec_compatible_with = [":hermetic_python"],
     tags = [
         "release_unit",
@@ -596,7 +599,6 @@ py_test(
     ],
     deps = [
         ":ray_release",
-        "//:ray_lib",
         bk_require("freezegun"),
         bk_require("pytest"),
     ],
