@@ -1,9 +1,8 @@
-import os
 import sys
 import yaml
 import pytest
 
-import runfiles
+from ray_release.bazel import bazel_runfile
 from ray_release.config import (
     read_and_validate_release_test_collection,
     Test,
@@ -14,10 +13,7 @@ from ray_release.config import (
 )
 from ray_release.exception import ReleaseTestConfigError
 
-_TEST_COLLECTION_FILE = runfiles.Create().Rlocation(
-    os.path.join("com_github_ray_project_ray", "release", "release_tests.yaml"),
-)
-
+_TEST_COLLECTION_FILE = bazel_runfile("release/release_tests.yaml")
 
 VALID_TEST = Test(
     **{

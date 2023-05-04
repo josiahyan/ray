@@ -3,7 +3,7 @@ import subprocess
 import os
 import json
 import time
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Set
 
 from ray_release.logger import logger
 from ray_release.buildkite.step import get_step
