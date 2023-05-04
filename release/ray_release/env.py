@@ -4,7 +4,7 @@ from typing import Dict
 import runfiles
 from ray_release.exception import ReleaseTestConfigError
 
-DEFAULT_ENVIRONMENT = "staging_v2"
+DEFAULT_ENVIRONMENT = "aws"
 
 _REPO_NAME = "com_github_ray_project_ray"
 
