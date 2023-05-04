@@ -52,10 +52,6 @@ DEFAULT_PYTHON_VERSION = tuple(
 RELEASE_PACKAGE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 RELEASE_TEST_SCHEMA_FILE = bazel_runfile("release/ray_release/schema.json")
-if not os.path.isfile(RELEASE_TEST_SCHEMA_FILE):
-    RELEASE_TEST_SCHEMA_FILE = os.path.join(
-        RELEASE_PACKAGE_DIR, "ray_release", "schema.json"
-    )
 
 
 def read_and_validate_release_test_collection(

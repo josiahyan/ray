@@ -10,14 +10,10 @@ DEFAULT_ENVIRONMENT = "aws"
 def load_environment(environment_name: str) -> Dict[str, str]:
     file_base = f"{environment_name}.env"
     env_file = bazel_runfile("release/ray_release/environments", file_base)
-    if not os.path.isfile(env_file):
-        # No bazel runfiles? Try load based on file local path.
-        this_dir = os.path.dirname(__file__)
-        env_file = os.path.join(this_dir, "environments")
-        if not os.path.isfile(env_file):
-            raise ReleaseTestConfigError(
-                f"Unknown environment with name: {environment_name}"
-            )
+    if not env_file or not os.path.isfile(env_file):
+        raise ReleaseTestConfigError(
+            f"Unknown environment with name: {environment_name}"
+        )
 
     env = {}
     with open(env_file, "r") as f:

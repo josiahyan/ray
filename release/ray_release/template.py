@@ -9,7 +9,6 @@ import yaml
 
 from ray_release.bazel import bazel_runfile
 from ray_release.config import (
-    RELEASE_PACKAGE_DIR,
     parse_python_version,
     DEFAULT_PYTHON_VERSION,
     get_test_cloud_id,
@@ -102,16 +101,7 @@ def render_yaml_template(template: str, env: Optional[Dict] = None):
 def get_cluster_env_path(test: "Test") -> str:
     working_dir = test.get("working_dir", "")
     cluster_env_file = test["cluster"]["cluster_env"]
-    f = bazel_runfile(os.path.join("release", working_dir, cluster_env_file))
-    if os.path.isfile(f):
-        return f
-    return os.path.normpath(
-        os.path.join(
-            RELEASE_PACKAGE_DIR,
-            working_dir,
-            cluster_env_file,
-        )
-    )
+    return bazel_runfile("release", working_dir, cluster_env_file)
 
 
 def load_test_cluster_env(test: "Test", ray_wheels_url: str) -> Optional[Dict]:
@@ -154,15 +144,6 @@ def load_test_cluster_compute(test: "Test") -> Optional[Dict]:
     cluster_compute_file = test["cluster"]["cluster_compute"]
     working_dir = test.get("working_dir", "")
     f = bazel_runfile("release", working_dir, cluster_compute_file)
-    if not os.path.isfile(f):
-        f = os.path.normpath(
-            os.path.join(
-                RELEASE_PACKAGE_DIR,
-                working_dir,
-                cluster_compute_file,
-            )
-        )
-
     env = populate_cluster_compute_variables(test)
     return load_and_render_yaml_template(f, env=env)
 
