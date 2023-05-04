@@ -451,6 +451,21 @@ py_test(
 )
 
 py_test(
+    name = "test_bisect",
+    size = "small",
+    srcs = ["ray_release/tests/test_bisect.py"],
+    exec_compatible_with = [":hermetic_python"],
+    tags = [
+        "release_unit",
+        "team:ci",
+    ],
+    deps = [
+        ":ray_release",
+        bk_require("pytest"),
+    ],
+)
+
+py_test(
     name = "test_buildkite",
     size = "small",
     srcs = ["ray_release/tests/test_buildkite.py"],
@@ -531,6 +546,21 @@ py_test(
     deps = [
         ":ray_release",
         ":test_utils",
+        bk_require("pytest"),
+    ],
+)
+
+py_test(
+    name = "test_log_aggregator",
+    size = "small",
+    srcs = ["ray_release/tests/test_log_aggregator.py"],
+    exec_compatible_with = [":hermetic_python"],
+    tags = [
+        "release_unit",
+        "team:ci",
+    ],
+    deps = [
+        ":ray_release",
         bk_require("pytest"),
     ],
 )

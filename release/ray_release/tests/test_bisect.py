@@ -1,3 +1,5 @@
+import sys
+import pytest
 from unittest import mock
 from typing import List, Dict
 
@@ -85,3 +87,7 @@ def test_bisect():
         ):
             for concurreny in range(1, 4):
                 assert _bisect({}, list(input.keys()), concurreny, 1) == output
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main(["-v", __file__]))
