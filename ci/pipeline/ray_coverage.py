@@ -8,18 +8,20 @@ import tempfile
 from datetime import date
 
 COVERAGE_FILE_NAME = "ray_release.cov"
+S3_BUCKET_NAME = "ray-release-automation-results"
+S3_BUCKET_FILEPATH = "continuous-release"
 
 
 @click.command()
 @click.argument("test_target", required=True, type=str)
 @click.option(
-    "--productionize",
+    "--upload",
     is_flag=True,
     show_default=True,
     default=False,
-    help=("Production mode. Compute and persist coverage data to DB."),
+    help=("Upload the computed coverage data to S3."),
 )
-def main(test_target: str, productionize: bool) -> None:
+def main(test_target: str, upload: bool) -> None:
     """
     This script collects dynamic coverage data for the test target, and upload the
     results to database (S3).
@@ -30,7 +32,7 @@ def main(test_target: str, productionize: bool) -> None:
     _run_test(test_target, coverage_file)
     coverage_info = _collect_coverage(coverage_file)
     logger.info(coverage_info)
-    if productionize:
+    if upload:
         s3_file_name = _persist_coverage_info(coverage_file)
         logger.info(f"Successfully uploaded coverage data to s3 as {s3_file_name}")
     return 0
@@ -38,11 +40,11 @@ def main(test_target: str, productionize: bool) -> None:
 
 def _persist_coverage_info(coverage_file: str) -> str:
     s3_file_name = (
-        f"continuous-release/ray-release-{date.today().strftime('%Y-%m-%d')}.cov"
+        f"{S3_BUCKET_FILEPATH}/ray-release-{date.today().strftime('%Y-%m-%d')}.cov"
     )
     boto3.client("s3").upload_file(
         coverage_file,
-        "ray-release-automation-results",
+        S3_BUCKET_NAME,
         s3_file_name,
     )
     return s3_file_name
